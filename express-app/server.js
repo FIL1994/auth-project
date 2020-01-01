@@ -13,11 +13,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api", (req, res) => {
-  res.send("Hello world");
+  res.send("api route");
 });
 
 app.get("/validate", (req, res) => {
-  console.log("headers", req.headers);
+  const { authorization } = req.headers;
+
   res
     .status(200)
     .set({
