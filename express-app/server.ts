@@ -1,5 +1,6 @@
-const express = require("express");
-const morgan = require("morgan");
+import * as express from "express";
+import * as morgan from "morgan";
+import { UserInput } from "./models/User";
 
 const PORT = 3000;
 const HOST = "0.0.0.0";
@@ -26,7 +27,15 @@ app.get("/validate", (req, res) => {
         name: "username"
       })
     })
-    .send("Success");
+    .send();
+});
+
+app.post("/login", (req, res) => {});
+
+app.post("/signup", (req, res) => {
+  const user: UserInput = req.body;
+
+  res.status(200).send();
 });
 
 app.listen(PORT, HOST);
