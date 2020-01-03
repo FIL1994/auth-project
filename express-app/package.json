@@ -9,14 +9,22 @@
   "author": "Philip Van Raalte",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/express": "^4.17.2",
     "@types/morgan": "^1.7.37",
+    "@types/pg": "^7.14.1",
+    "@types/redis": "^2.8.14",
     "nodemon": "^2.0.2",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.4"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "class-validator": "^0.11.0",
     "express": "^4.17.1",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "pg": "^7.17.0",
+    "redis": "^2.8.0"
   }
 }

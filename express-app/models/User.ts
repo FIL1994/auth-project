@@ -1,8 +1,20 @@
-export interface User {
-  readonly id: string;
+import { IsNotEmpty, IsEmail, MinLength, MaxLength } from "class-validator";
+
+export class UserInput {
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
+
+  @IsNotEmpty()
+  @MinLength(3)
+  @MaxLength(20)
   name: string;
+
+  @IsNotEmpty()
+  @MinLength(4)
   password: string;
 }
 
-export interface UserInput extends Omit<User, "id"> {}
+export class User extends UserInput {
+  readonly id: string;
+}

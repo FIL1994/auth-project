@@ -1,4 +1,4 @@
-FROM node:lts-jessie-slim
+FROM node:lts-slim
 
 # Create app directory
 WORKDIR /usr/local/express
