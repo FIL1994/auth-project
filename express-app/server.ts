@@ -1,7 +1,9 @@
+require("dotenv").config();
 import * as express from "express";
 import * as morgan from "morgan";
 import * as bodyParser from "body-parser";
 import * as bcrypt from "bcryptjs";
+import * as jwt from "jsonwebtoken";
 import * as HttpStatus from "http-status-codes";
 import * as _ from "lodash";
 import { UserInput, User } from "./models/User";
@@ -27,12 +29,20 @@ app.get("/api", (req, res) => {
 app.get("/validate", (req, res) => {
   const { authorization } = req.headers;
 
+  if (_.isEmpty(authorization)) {
+    res.status(HttpStatus.BAD_REQUEST).send("Authorization header is required");
+    return;
+  }
+
+  const user = jwt.verify(
+    authorization.replace("Bearer ", ""),
+    process.env.JWT_SECRET
+  );
+
   res
     .status(HttpStatus.OK)
     .set({
-      User: JSON.stringify({
-        name: "username"
-      })
+      User: JSON.stringify(user)
     })
     .send();
 });
@@ -74,8 +84,19 @@ app.post("/login", async (req, res) => {
     res.status(HttpStatus.BAD_REQUEST).send({ error: "Invalid password" });
   }
 
+  const token = jwt.sign(
+    {
+      id: user.id,
+      email: user.email
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "30d"
+    }
+  );
+
   delete user.password;
-  res.send(user);
+  res.send({ user, token });
 });
 
 app.post("/signup", async (req, res) => {
