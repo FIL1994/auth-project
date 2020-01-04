@@ -17,5 +17,4 @@ export class UserInput {
 
 export class User extends UserInput {
   readonly id: string;
-  password?: never;
 }

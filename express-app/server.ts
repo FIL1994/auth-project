@@ -7,7 +7,6 @@ import * as _ from "lodash";
 import { UserInput, User } from "./models/User";
 import { validate } from "class-validator";
 import { pool } from "./db";
-import { QueryResult } from "pg";
 
 const PORT = 3000;
 const HOST = "0.0.0.0";
@@ -53,7 +52,7 @@ app.post("/login", async (req, res) => {
   let user: User;
   try {
     const result = await pool.query(
-      `SELECT user_id as id, email, name FROM app_user WHERE email = $1 LIMIT 1`,
+      `SELECT user_id as id, email, name, password FROM app_user WHERE email = $1 LIMIT 1`,
       [email]
     );
 
@@ -70,6 +69,12 @@ app.post("/login", async (req, res) => {
     return;
   }
 
+  const doPasswordsMatch = await bcrypt.compare(password, user.password);
+  if (!doPasswordsMatch) {
+    res.status(HttpStatus.BAD_REQUEST).send({ error: "Invalid password" });
+  }
+
+  delete user.password;
   res.send(user);
 });
 
