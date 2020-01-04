@@ -12,9 +12,10 @@ export class UserInput {
 
   @IsNotEmpty()
   @MinLength(4)
-  password: string;
+  password?: string;
 }
 
 export class User extends UserInput {
   readonly id: string;
+  password?: never;
 }
