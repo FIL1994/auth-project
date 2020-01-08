@@ -12,7 +12,7 @@ CREATE OR REPLACE FUNCTION notify_event() RETURNS TRIGGER AS $$
         payload = json_build_object(
             'table', TG_TABLE_NAME,
             'action', TG_OP,
-            'data', row_to_json(record)
+            'data', row_to_json(record)::jsonb - 'password' - 'id'
         );
 
         PERFORM pg_notify('events', payload::text);

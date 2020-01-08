@@ -6,14 +6,20 @@ services:
       - ./config/db.env
     volumes:
       - ./docker/postgres:/docker-entrypoint-initdb.d/
-  auth_db:
-    image: redis
+  user-subscriber:
+    build: user-subscriber/.
+    volumes:
+      - ./user-subscriber/:/go/src/app
+    depends_on:
+      - db
   express-app:
     build: express-app/.
     volumes:
       - ./express-app/:/usr/local/express
     links:
-      - auth_db
+      - db
+    depends_on:
+      - user-subscriber
   nginx:
     image: nginx
     volumes:
@@ -22,8 +28,10 @@ services:
       - 80:8080
     depends_on:
       - express-app
-  rabbitmq:
-    image: rabbitmq:management
-    ports:
-      - 5672:5672
-      - 15672:15672
+  # rabbitmq:
+  #   image: rabbitmq:management
+  #   ports:
+  #     - 5672:5672
+  #     - 15672:15672
+  # auth_db:
+  #   image: redis

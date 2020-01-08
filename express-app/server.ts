@@ -129,6 +129,7 @@ app.post("/signup", async (req, res) => {
     res.status(HttpStatus.OK).send(user);
   } catch (e) {
     client.release();
+    console.log("Error", e);
 
     res
       .status(HttpStatus.INTERNAL_SERVER_ERROR)
