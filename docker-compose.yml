@@ -22,3 +22,8 @@ services:
       - 80:8080
     depends_on:
       - express-app
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 5672:5672
+      - 15672:15672
